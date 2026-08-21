@@ -1,8 +1,4 @@
-- When user presses Calculate without having made any choice, show a pop-up to state the error. Do not display NaN result.
-
 - Result section should display: choose your preferred metric units and fill in your measurements. Your result will be displayed here.
-
-- Use realistic height and weight ranges
 
 - In Result, display height and weight together with BMI result.
 
@@ -11,5 +7,3 @@
 - Add a section in footer with links (Join me) of LinkedIn, GitHub.
 
 - No need to scroll down the page to see footer. Fix that.
-
-- Add more space above header.

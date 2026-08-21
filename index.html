@@ -27,7 +27,7 @@
         </div>
     </nav> -->
     
-    <header class="container-fluid py-3 text-center">
+    <header class="container-fluid py-5 text-center">
         <h1>BMI Calculator</h1>
         <p>Millions of people have lost weight using the BMI Calculator</p>
     </header>
@@ -58,26 +58,28 @@
                     <div id="cm-group">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Height</span>
-                            <input type="number" name="height-cm" class="form-control" placeholder="180" aria-label="Height" min="0">
+                            <input type="number" name="height-cm" class="form-control" placeholder="180" aria-label="Height" min="20" required>
                             <span class="input-group-text">cm</span>
                         </div>
                     </div>
                     <div id="feet-inches-group" class="d-none">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Height</span>
-                            <input type="number" name="height-feet" class="form-control" placeholder="5" aria-label="Height" min="0">
+                            <input type="number" name="height-feet" class="form-control" placeholder="5" aria-label="Height" min="0" required>
                             <span class="input-group-text">feet</span>
-                            <input type="number" name="height-inches" class="form-control ms-2" placeholder="6" aria-label="Height" min="0">
+                            <input type="number" name="height-inches" class="form-control ms-2" placeholder="6" aria-label="Height" min="5" required>
                             <span class="input-group-text">inches</span>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Weight</span>
-                        <input type="number" name="weight" class="form-control" placeholder="75" aria-label="Weight" min="0">
+                        <input type="number" name="weight" class="form-control" placeholder="75" aria-label="Weight" min="10" required>
                         <span id="weight-unit" class="input-group-text">kg</span>
                     </div>
                 </fieldset>
                 <button class="btn btn-primary me-2" type="submit">Calculate</button>
+                <div class="popup"><span class="popuptext" id="myPopup">You haven't selected any measurements!</span>
+                </div>
                 <button class="btn btn-primary" type="reset">Reset</button>
             </form>
             

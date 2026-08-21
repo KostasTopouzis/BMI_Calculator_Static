@@ -75,11 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const metricWeight = formData.get('metric-weight');
         const metricHeight = formData.get('metric-height');
         let bmi, idx;
-
+        
         const weightInput = parseFloat(formData.get('weight')) || 0;
         const heightCmInput = parseFloat(formData.get('height-cm')) || 0;
         const heightFeetInput = parseFloat(formData.get('height-feet')) || 0;
         const heightInchesInput = parseFloat(formData.get('height-inches')) || 0;
+        console.log(`W: ${weightInput}, H: ${heightCmInput}`);
         
         // Convert all measurements to a standard unit (kg and cm) for calculation
         const weightInKg = (metricWeight === 'pd') ? weightInput * poundToKg : weightInput;
