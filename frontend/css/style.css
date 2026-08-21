@@ -8,7 +8,7 @@ footer {
 
 .form-control::placeholder {
     /* Increase opacity to make placeholder text less faint */
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 #obesity-table tr:not(#header-row) td:nth-child(2) {

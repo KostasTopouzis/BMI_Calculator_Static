@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const metricWeightSelect = document.getElementById('metric-weight');
     const cmGroup = document.getElementById('cm-group');
     const feetInchesGroup = document.getElementById('feet-inches-group');
-    const saveButton = document.getElementById('save-btn');
     const bmiResult = document.getElementById('bmi-result');
 
     let highlightedRow = null;
@@ -87,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         bmi = weightInKg / heightInM**2;
         
-        
         // FOR DEBUGGING
         // console.log(`BMI: ${bmi}`);
 
@@ -121,9 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
             highlightedRow.style.outline = '1px solid lightblue';
             highlightedRow.style.color = "white";
         }
-
-        // MAKE SAVE BUTTON APPEAR
-        saveButton.classList.remove('d-none');
     });
 
     bmiForm.addEventListener('reset', (event) => {
@@ -135,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         bmiResult.innerHTML = "Choose your preferred metric units \
                     and fill in your measurements. Your results will show here.";
-        saveButton.classList.add('d-none');
         // If a row is highlighted, remove its styling and reset the state variable
         if (highlightedRow) {
             highlightedRow.classList.remove('table-active', 'fs-5', 'text-light');
