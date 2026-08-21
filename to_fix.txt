@@ -1,5 +1,3 @@
-- Add a section in footer with links (Join me) of LinkedIn, GitHub.
-
 - No need to scroll down the page to see footer. Fix that.
 
 - The CSS opacity attribute for the form placeholder text doesn't seem to
