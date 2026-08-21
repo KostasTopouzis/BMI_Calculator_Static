@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedValue === 'kg') {
             document.getElementById('weight-unit').textContent = 'kg';
         } else if (selectedValue === 'pd') {
-            document.getElementById('weight-unit').textContent = 'pounds';
+            document.getElementById('weight-unit').textContent = 'lb';
         }
     }
 
@@ -112,7 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const category = categories[idx];
-        bmiResult.innerHTML = `Result<br>BMI: ${bmi.toFixed(2)}<br>Category: ${category}`;
+        let heightText = metricHeight === 'feet' ? `${heightFeetInput} ft ${heightInchesInput} in` : `${heightCmInput} cm`;
+        let weightText = metricWeight === 'pd' ? `${weightInput} lb` : `${weightInput} kg`;
+        bmiResult.innerHTML = `Height: ${heightText}<br>Weight: ${weightText}<br>BMI: ${bmi.toFixed(2)}<br>Category: ${category}`;
 
         highlightedRow = document.getElementById(`cat-${idx}`);
         if(highlightedRow) {
@@ -127,11 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     bmiForm.addEventListener('reset', () => {
-        bmiResult.innerHTML = "Result";
+        bmiResult.innerHTML = "Choose your preferred metric units \
+                    and fill in your measurements. Your results will show here.";
         saveButton.classList.add('d-none');
         // If a row is highlighted, remove its styling and reset the state variable
         if (highlightedRow) {
-            highlightedRow.classList.remove('table-active', 'fs-5', 'text-light');
+            highlightedRow.classList.remove('table-active', 'fs-5', 'text-light', 'shadow-lg');
             highlightedRow.style.outline = 'none';
             highlightedRow = null;
         }
