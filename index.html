@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BMI Calculator Home Page">
+    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="frontend/assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="frontend/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="frontend/assets/images/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="frontend/assets/images/favicon.ico">
+    <link rel="manifest" href="frontend/assets/images/site.webmanifest">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+          crossorigin="anonymous">
+    
+    <title>BMI Calculator</title>
+</head>
+
+<body>
+    <!-- <nav class="navbar p-0 bg-dark">
+        <div id="nav-container" class="container-fluid px-4 py-2 border-bottom">
+            <a class="navbar-brand" href="index.html">
+                <img src="frontend/assets/images/favicon.ico" alt="BMI Calculator Logo" width="32" height="32">
+            </a>
+        </div>
+    </nav> -->
+    
+    <header class="container-fluid py-3 text-center">
+        <h1>BMI Calculator</h1>
+        <p>Millions of people have lost weight using the BMI Calculator</p>
+    </header>
+    
+    <main id="content" class="container min-vh-100">
+        <div class="row justify-content-center justify-content-lg-evenly mx-2 mx-sm-0 g-5">
+            <form id="bmi-form" class="col-sm col-md-7 col-lg-5 col-xl-4 col-xxl-4">
+                <fieldset id="metrics" class="row mb-3 border rounded px-3 py-2">
+                    <legend>Choose metric units</legend>
+                    <div class="row align-items-center mb-3">
+                        <label for="metric-height" class="col-auto">Height</label>
+                        <select id="metric-height" name="metric-height" class="form-select col" aria-label="Choose height metric units">
+                            <option value="meters" selected>Centimeters</option>
+                            <option value="feet">Feet and inches</option>
+                        </select>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <label for="metric-weight" class="col-auto">Weight</label>
+                        <select id="metric-weight" name="metric-weight" class="form-select col" aria-label="Choose weight metric units">
+                            <option value="kg" selected>Kilograms</option>
+                            <option value="pd">Pounds</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <fieldset id="measurements" class="row border rounded mb-3 px-3 py-2">
+                    <legend>Fill in your measurements</legend>
+                    <div id="cm-group">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Height</span>
+                            <input type="number" name="height-cm" class="form-control" placeholder="180" aria-label="Height" min="0">
+                            <span class="input-group-text">cm</span>
+                        </div>
+                    </div>
+                    <div id="feet-inches-group" class="d-none">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Height</span>
+                            <input type="number" name="height-feet" class="form-control" placeholder="5" aria-label="Height" min="0">
+                            <span class="input-group-text">feet</span>
+                            <input type="number" name="height-inches" class="form-control ms-2" placeholder="6" aria-label="Height" min="0">
+                            <span class="input-group-text">inches</span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Weight</span>
+                        <input type="number" name="weight" class="form-control" placeholder="75" aria-label="Weight" min="0">
+                        <span id="weight-unit" class="input-group-text">kg</span>
+                    </div>
+                </fieldset>
+                <button class="btn btn-primary me-2" type="submit">Calculate</button>
+                <button class="btn btn-primary" type="reset">Reset</button>
+            </form>
+            
+            <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 h-25 px-4 py-2 bg-info opacity-75 border justify-content-center">
+                <span id="bmi-result" class="row fs-3 text-light">Result</span>
+                <button id="save-btn" class="row my-2 btn btn-primary d-none">Save your measurement</button>
+            </div>
+
+            <div class="col-md col-lg-7 col-xl-4 col-xxl-5">
+                <table id="obesity-table" class="table table-striped-columns border border-1 border-info">
+                    <tr id="header-row" class="table-dark text-center">
+                        <th>Classification</th>
+                        <th>BMI range - kg/m<sup>2</sup></th>
+                    </tr>
+                    <tr id="cat-0" class="table-secondary">
+                        <td>Severe Thinness</td>
+                        <td>&lt; 16</td>
+                    </tr>
+                    <tr id="cat-1" class="table-primary">
+                        <td>Moderate Thinness</td>
+                        <td>16 - 17</td>
+                    </tr>
+                    <tr id="cat-2" class="table-info">
+                        <td>Mild Thinness</td>
+                        <td>17 - 18.5</td>
+                    </tr>
+                    <tr id="cat-3" class="table-success">
+                        <td>Normal</td>
+                        <td>18.5 - 25</td>
+                    </tr>
+                    <tr id="cat-4" class="table-warning">
+                        <td>Overweight</td>
+                        <td>25 - 30</td>
+                    </tr>
+                    <tr id="cat-5" class="table-danger">
+                        <td>Obese Class I</td>
+                        <td>30 - 35</td>
+                    </tr>
+                    <tr id="cat-6" class="table-danger">
+                        <td>Obese Class II</td>
+                        <td>35 - 40</td>
+                    </tr>
+                    <tr id="cat-7" class="table-danger">
+                        <td>Obese Class III</td>
+                        <td>&gt; 40</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark flex-wrap justify-content-between align-items-center p-3 border-top">
+        <div class="d-flex container-fluid justify-content-center">
+            <div class="col-md-4 d-flex justify-content-center align-items-center">
+            <!-- <a href="/"
+                class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
+                aria-label="Bootstrap">
+            <svg class="bi" width="30" height="24" aria-hidden="true">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+            </a> -->
+            <span class="mb-3 mb-md-0 text-white">Made by Kostas Topouzis with Bootstrap 5.3.8</span>
+            </div>
+            <!-- <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#" aria-label="Instagram">
+                    <svg class="bi" width="24" height="24" aria-hidden="true">
+                    <use xlink:href="#instagram"></use>
+                    </svg>
+                </a>
+            </li>
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#" aria-label="Facebook">
+                    <svg class="bi" width="24" height="24">
+                    <use xlink:href="#facebook"></use>
+                    </svg>
+                </a>
+            </li>
+            </ul> -->
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
+            crossorigin="anonymous">
+    </script>
+    <script defer src="frontend/js/calc.js"></script>
+</body>
+</html>

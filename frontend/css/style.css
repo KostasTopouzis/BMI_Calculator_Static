@@ -1,0 +1,32 @@
+#carouselExampleFade {
+    max-width: 480px;
+}
+
+#nav-container {
+    height: 76px;
+}
+
+footer {
+    height: 120px;
+}
+
+.form-control::placeholder {
+    /* Increase opacity to make placeholder text less faint */
+    opacity: 0.6;
+}
+
+#obesity-table tr:not(#header-row) td:nth-child(2) {
+    text-align: center;
+}
+
+
+#submit-btn {
+    /* background: #b9d6e3; */
+    background: rgb(145, 182, 243);
+    color: white;
+}
+
+#submit-btn:hover {
+    background: rgba(145, 182, 243, 0.7);
+    color: black;
+}
