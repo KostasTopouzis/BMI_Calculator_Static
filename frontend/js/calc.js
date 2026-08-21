@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
     metricHeightSelect.addEventListener('change', toggleHeightInputs);
 
     bmiForm.addEventListener('submit', (event) => {
-        // Prevent the default form submission which reloads the page
         event.preventDefault();
 
         // If a row is already highlighted, remove its styling first
@@ -90,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         
         // FOR DEBUGGING
-        console.log(`BMI: ${bmi}`);
+        // console.log(`BMI: ${bmi}`);
 
         
         if(bmi < 16.0) {
@@ -125,16 +124,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // MAKE SAVE BUTTON APPEAR
         saveButton.classList.remove('d-none');
-
     });
 
-    bmiForm.addEventListener('reset', () => {
+    bmiForm.addEventListener('reset', (event) => {
+        event.preventDefault();
+
+        bmiForm.querySelectorAll('input[type="number"]').forEach((input) => {
+            input.value = '';
+        });
+
         bmiResult.innerHTML = "Choose your preferred metric units \
                     and fill in your measurements. Your results will show here.";
         saveButton.classList.add('d-none');
         // If a row is highlighted, remove its styling and reset the state variable
         if (highlightedRow) {
-            highlightedRow.classList.remove('table-active', 'fs-5', 'text-light', 'shadow-lg');
+            highlightedRow.classList.remove('table-active', 'fs-5', 'text-light');
             highlightedRow.style.outline = 'none';
             highlightedRow = null;
         }

@@ -1,9 +1,3 @@
-- Result section should display: choose your preferred metric units and fill in your measurements. Your result will be displayed here.
-
-- In Result, display height and weight together with BMI result.
-
-- Upon reset, Height category returns to centimeters, but bottom box remains previous choice (e.g., feet/inches).
-
 - Add a section in footer with links (Join me) of LinkedIn, GitHub.
 
 - No need to scroll down the page to see footer. Fix that.
