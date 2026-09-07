@@ -1,5 +1,13 @@
-notes.txt
-to_fix.txt
+__blobstorage__/
+__queuestorage__/
+__pycache__/
 
 api/.venv/
+api/local.settings.json
+
+__azurite_db_*.json
+AzuriteConfig
+
 notes/
+
+.pyc
