@@ -17,9 +17,21 @@
     
     <title>Welcome Page</title>
 </head>
-<body>
-    <h1>Welcome to your account!</h1>
-    <div id="apiMessage"></div>
+<body class="d-flex flex-column min-vh-100">
+    <!-- The element implements the aside navbar panel -->
+    <aside id="options-panel" class="options-panel" aria-hidden="true">
+        <nav class="d-flex flex-row flex-md-column gap-2 p-3" aria-label="Page options">
+            <a class="btn btn-primary text-center" href="login.html">Log out</a>
+            <a class="btn btn-primary text-center" href="#">Records</a>
+        </nav>
+    </aside>
+
+    <header class="container-fluid py-5 text-center">
+        <h1>Welcome to your account!</h1>
+    </header>
+    <main id="user-account-content" class="container d-flex justify-content-center flex-grow-1">
+        <div id="apiMessage"></div>
+    </main>
 
     <footer class="bg-dark p-3 border-top">
         <div class="container-fluid">
