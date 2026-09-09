@@ -11,3 +11,35 @@
 footer {
     min-height: 120px;
 }
+
+:root {
+    --options-panel-width: min(120px, 82vw);
+    --options-panel-height: auto;
+}
+
+.options-panel {
+    position: absolute;
+    z-index: 1030;
+    top: 54px;
+    right: 0;
+    width: var(--options-panel-width);
+    height: var(--options-panel-height);
+    background-color: rgba(234, 241, 248, 0.68);
+    border: 1px solid rgb(205, 230, 238);
+    border-radius: 8px 0 0 8px;
+}
+
+@media (max-width: 767.98px) {
+    .options-panel {
+        position: static;
+        width: 100%;
+        background-color: inherit;
+        border: 0;
+        border-radius: 0px;
+    }
+    
+    #options-panel nav {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}

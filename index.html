@@ -18,7 +18,15 @@
     <title>BMI Calculator</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100">    
+<body class="d-flex flex-column min-vh-100 overflow-x-hidden">
+    <!-- The element implements the aside navbar panel -->
+    <aside id="options-panel" class="options-panel" aria-hidden="true">
+        <nav class="d-flex flex-row flex-md-column gap-2 p-3" aria-label="Page options">
+            <a class="btn btn-primary text-center" href="frontend/html/login.html">Log in</a>
+            <a class="btn btn-primary text-center" href="frontend/html/signup.html">Sign up</a>
+        </nav>
+    </aside>
+
     <header class="container-fluid py-5 text-center">
         <h1>BMI Calculator</h1>
         <p>Millions of people have lost weight using the BMI Calculator</p>
@@ -69,8 +77,10 @@
                         <span id="weight-unit" class="input-group-text">kg</span>
                     </div>
                 </fieldset>
-                <button class="btn btn-primary me-2" type="submit">Calculate</button>
-                <button class="btn btn-primary" type="reset">Reset</button>
+                <div id="calculator-actions">
+                    <button class="btn btn-primary me-2" type="submit">Calculate</button>
+                    <button class="btn btn-primary" type="reset">Reset</button>
+                </div>
             </form>
             
             <div class="col-md-5 col-lg-4 col-xl-3 col-xxl-3 h-25 px-4 py-2 bg-light opacity-75 border border-1 border-info rounded-3 justify-content-center">

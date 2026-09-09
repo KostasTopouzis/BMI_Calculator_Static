@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="BMI Calculator Login Page">
-    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="apple-touch-icon" sizes="180x180" href="frontend/assets/images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="frontend/assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="frontend/assets/images/favicon-16x16.png">
@@ -19,15 +19,23 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
+    <!-- The element implements the aside navbar panel -->
+    <aside id="options-panel" class="options-panel" aria-hidden="true">
+        <nav class="d-flex flex-row flex-md-column gap-2 p-3" aria-label="Page options">
+            <a class="btn btn-primary text-center" href="/index.html">Home</a>
+            <a class="btn btn-primary text-center" href="login.html">Log in</a>
+        </nav>
+    </aside>
+    
     <header class="container-fluid py-5 text-center">
         <h1>BMI Calculator</h1>
-        <p>Log in to continue</p>
+        <p>Create an account to save your measurements</p>
     </header>
 
     <main id="content" class="container flex-grow-1 d-flex justify-content-center align-items-start">
         <form id="login-form" class="col-11 col-sm-8 col-md-6 col-lg-4 border rounded px-4 py-4" action="#" method="post">
             <fieldset>
-                <legend class="text-center mb-4">Login</legend>
+                <legend class="text-center mb-4">Sign up</legend>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" name="username" class="form-control" autocomplete="username" required>
@@ -36,7 +44,7 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required>
                 </div>
-                <button class="btn btn-primary w-100" type="submit">Log in</button>
+                <button class="btn btn-primary w-100" type="submit">Sign up</button>
             </fieldset>
         </form>
     </main>
