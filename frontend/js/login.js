@@ -1,4 +1,4 @@
-const loginBtn = document.getElementById('#login-btn');
+const loginBtn = document.getElementById('login-btn');
 
 loginBtn.addEventListener('click', async () => {
     try {

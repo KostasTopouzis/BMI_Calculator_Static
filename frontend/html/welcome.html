@@ -21,11 +21,43 @@
     <h1>Welcome to your account!</h1>
     <div id="apiMessage"></div>
 
-    <script>
-        const message = sessionStorage.getItem('apiMessage');
+    <footer class="bg-dark p-3 border-top">
+        <div class="container-fluid">
+            <div class="row d-flex flex-column flex-md-row justify-content-around">
+                <div class="col-md-4 col-lg-5 text-center text-white">
+                    Made with Bootstrap 5.3.8. Icons by
+                    <a href="https://icons8.com/" class="link-light link-underline-opacity-50 link-underline-opacity-100-hover footer-link">Icons8</a>
+                </div>
 
-        document.getElementById('apiMessage').textContent = 
-            message || 'No message received.';
+                <div class="col-md-3 col-lg-2"></div>
+
+                <div class="col-md-4 d-flex flex-column gap-1 gap-sm-2 align-items-center align-items-md-end mt-2 mt-md-0 text-light">
+                    <span class="d-flex align-items-center gap-2">
+                        Find me on
+                        <a href="https://github.com/KostasTopouzis" class="link-light link-underline-opacity-50 link-underline-opacity-100-hover" aria-label="GitHub">GitHub</a>
+                        <img src="../assets/images/icons8-github-96.jpg" width="28" height="28" alt="GitHub icon">
+                    </span>
+                    <span class="d-flex align-items-center gap-2">
+                        Follow me on
+                        <a href="https://www.linkedin.com/" class="link-light link-underline-opacity-50 link-underline-opacity-100-hover footer-link" aria-label="LinkedIn">LinkedIn</a>
+                        <img src="../assets/images/icons8-linkedin-96.svg" width="30" height="30" alt="LinkedIn icon">
+                    </span>
+                </div>
+
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // This ensures the element 'apiMessage' exists before the script loads
+        // It may not be strictly necessary
+        document.addEventListener('DOMContentLoaded', () => {
+            const message = sessionStorage.getItem('apiMessage');
+
+            document.getElementById('apiMessage').textContent = 
+                message || 'No message received.';
+        });
     </script>
 </body>
 </html>
