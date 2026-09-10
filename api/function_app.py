@@ -1,10 +1,15 @@
 import azure.functions as func
-import datetime
 import json
-import logging
 
 app = func.FunctionApp()
 
 @app.route(route='hello', methods=['GET'])
 def hello(req: func.HttpRequest) -> func.HttpResponse:
-    return func.HttpResponse('Hello, there!')
+    data = {'message': 'User data is...',
+            'success': True}
+    
+    return func.HttpResponse(
+        json.dumps(data)
+        mimetype='application/json',
+        status_code=200
+    )
