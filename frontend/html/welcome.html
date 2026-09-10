@@ -30,7 +30,7 @@
         <h1>Welcome to your account!</h1>
     </header>
     <main id="user-account-content" class="container d-flex justify-content-center flex-grow-1">
-        <div id="apiMessage"></div>
+        <div id="api-message"></div>
     </main>
 
     <footer class="bg-dark p-3 border-top">
@@ -67,7 +67,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const message = sessionStorage.getItem('apiMessage');
 
-            document.getElementById('apiMessage').textContent = 
+            document.getElementById('api-message').textContent = 
                 message || 'No message received.';
         });
     </script>

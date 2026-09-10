@@ -9,7 +9,7 @@ def hello(req: func.HttpRequest) -> func.HttpResponse:
             'success': True}
     
     return func.HttpResponse(
-        json.dumps(data)
+        json.dumps(data),
         mimetype='application/json',
         status_code=200
     )

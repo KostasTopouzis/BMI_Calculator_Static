@@ -1,20 +1,21 @@
 const loginBtn = document.getElementById('login-btn');
 
-loginBtn.addEventListener('click', async () => {
-    try {
-        const response = await fetch('/api/hello');
+loginBtn.addEventListener("click", async () => {
 
-        if(!response.ok) {
+    try {
+        const response = await fetch("/api/hello");
+
+        if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
         }
 
-        const message = await response.text();
+        const data = await response.json();
 
-        sessionStorage.setItem('apiMessage', message);
+        sessionStorage.setItem("apiMessage", data.message);
 
-        window.location.href = 'welcome.html';
-    } catch(error) {
-        console.error('API request failed: ', error);
-        alert('Could not connect to the server.');
+        window.location.href = "welcome.html";
+    } catch (error) {
+        console.error("API request failed:", error);
+        alert("Could not connect to the server.");
     }
 });
