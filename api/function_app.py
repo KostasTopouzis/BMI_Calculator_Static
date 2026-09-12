@@ -44,10 +44,8 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
     for idx, user in enumerate(users):
         users[idx] = *user[:-1], user[-1].isoformat()
 
-    logging.info('Type: %s', type(users))
-    logging.info('Content: %s', users)
-
-
+    # logging.info('Type: %s', type(users))
+    # logging.info('Content: %s', users)
 
     return func.HttpResponse(
         json.dumps(users),
