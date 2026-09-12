@@ -31,6 +31,16 @@ def hello(req: func.HttpRequest) -> func.HttpResponse:
 
 @app.route(route='login', methods=['GET'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
+    connection = psycopg.connect(
+    host=host,
+    dbname=database,
+    user=user,
+    password=password,
+    port=5432
+    )
+
+    cursor = connection.cursor()
+
     # Here goes the SQL query code
     cursor.execute(
         "SELECT * FROM users"
@@ -46,6 +56,9 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
 
     # logging.info('Type: %s', type(users))
     # logging.info('Content: %s', users)
+
+    cursor.close()
+    connection.close()
 
     return func.HttpResponse(
         json.dumps(users),
