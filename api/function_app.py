@@ -1,5 +1,5 @@
 import azure.functions as func
-import json, psycopg, os, logging, datetime, itertools
+import json, psycopg, os, logging, datetime
 
 host = os.environ['POSTGRES_HOST']
 database = os.environ['POSTGRES_DATABASE']
@@ -7,16 +7,6 @@ user = os.environ['POSTGRES_USER']
 password = os.environ['POSTGRES_PASSWORD']
 
 app = func.FunctionApp()
-
-connection = psycopg.connect(
-    host=host,
-    dbname=database,
-    user=user,
-    password=password,
-    port=5432
-)
-
-cursor = connection.cursor()
 
 @app.route(route='hello', methods=['GET'])
 def hello(req: func.HttpRequest) -> func.HttpResponse:
