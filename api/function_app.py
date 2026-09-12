@@ -58,5 +58,9 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         )
     except Exception as e:
         logging.exception(f'Database operation failed: {e}')
-        
+        return func.HttpResponse(
+            "TEST FAIL",
+            status_code=400
+        )
+
 
