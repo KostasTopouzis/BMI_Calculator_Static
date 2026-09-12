@@ -21,37 +21,42 @@ def hello(req: func.HttpRequest) -> func.HttpResponse:
 
 @app.route(route='login', methods=['GET'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
-    connection = psycopg.connect(
-    host=host,
-    dbname=database,
-    user=user,
-    password=password,
-    port=5432
-    )
+    try:
+        connection = psycopg.connect(
+        host=host,
+        dbname=database,
+        user=user,
+        password=password,
+        port=5432
+        )
 
-    cursor = connection.cursor()
+        cursor = connection.cursor()
 
-    # Here goes the SQL query code
-    cursor.execute(
-        "SELECT * FROM users"
-    )
+        # Here goes the SQL query code
+        cursor.execute(
+            "SELECT * FROM users"
+        )
 
-    users = cursor.fetchall()
+        users = cursor.fetchall()
 
-    # logging.info('Type: %s', type(users))
-    # logging.info('Content: %s', users)
+        # logging.info('Type: %s', type(users))
+        # logging.info('Content: %s', users)
 
-    for idx, user in enumerate(users):
-        users[idx] = *user[:-1], user[-1].isoformat()
+        for idx, user in enumerate(users):
+            users[idx] = *user[:-1], user[-1].isoformat()
 
-    # logging.info('Type: %s', type(users))
-    # logging.info('Content: %s', users)
+        # logging.info('Type: %s', type(users))
+        # logging.info('Content: %s', users)
 
-    cursor.close()
-    connection.close()
+        cursor.close()
+        connection.close()
 
-    return func.HttpResponse(
-        json.dumps(users),
-        mimetype='application/json',
-        status_code=200
-    )
+        return func.HttpResponse(
+            json.dumps(users),
+            mimetype='application/json',
+            status_code=200
+        )
+    except Exception as e:
+        logging.exception(f'Database operation failed: {e}')
+        
+
