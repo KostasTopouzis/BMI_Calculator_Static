@@ -62,12 +62,14 @@
     </footer>
 
     <script>
+        const apiMessage = document.getElementById('api-message');
         // This ensures the element 'apiMessage' exists before the script loads
         // It may not be strictly necessary
         document.addEventListener('DOMContentLoaded', () => {
-            const message = sessionStorage.getItem('apiMessage');
-
-            document.getElementById('api-message').textContent = 
+            const message = JSON.parse(sessionStorage.getItem('apiMessage'));
+            // console.log(typeof message, message.length);
+           
+            apiMessage.innerHTML = 
                 message || 'No message received.';
         });
     </script>
