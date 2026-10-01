@@ -1,12 +1,21 @@
 const loginBtn = document.getElementById('login-btn');
+const loginForm = document.getElementById('login-form')
 
-loginBtn.addEventListener("click", async () => {
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault()
+
+    const formData = new FormData(loginForm);
+    // const d = JSON.stringify(formData)
+    // console.log(d, typeof d)
 
     try {
-        const response = await fetch("/api/login");
+        const response = await fetch("http://localhost:7071/api/login", {
+            method: 'POST',
+            body: formData
+        });
 
         if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
+            throw new Error(`HTTP error: ${response.body}`);
         }
 
         const data = await response.json();
