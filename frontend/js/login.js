@@ -5,13 +5,17 @@ loginForm.addEventListener("submit", async (event) => {
     event.preventDefault()
 
     const formData = new FormData(loginForm);
+    const plainDataObject = Object.fromEntries(formData)
     // const d = JSON.stringify(formData)
     // console.log(d, typeof d)
 
     try {
         const response = await fetch("http://localhost:7071/api/login", {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(plainDataObject)
         });
 
         if (!response.ok) {

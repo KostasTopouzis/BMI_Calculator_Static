@@ -22,12 +22,12 @@ app = func.FunctionApp()
 @app.route(route='login', methods=['POST'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
     try:
-        # req_body = req.get_json()
-        # username = req_body.get('username', '').strip()
-        # password = req_body.get('password', '').strip()
+        req_body = req.get_json()
+        username = req_body.get('username', '').strip()
+        password = req_body.get('password', '').strip()
 
-        username = req.form.get('username')
-        password = req.form.get('password')
+        # username = req.form.get('username')
+        # password = req.form.get('password')
         print(username, password)
 
         if not (username and password):
