@@ -24,7 +24,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
     try:
         req_body = req.get_json()
         username = req_body.get('username', '').strip()
-        password = req_body.get('password', '').strip()
+        password = req_body.get('password', '')
 
         # username = req.form.get('username')
         # password = req.form.get('password')
@@ -74,7 +74,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:
         logging.exception(f'Database operation failed: {e}')
         return func.HttpResponse(
-            "TEST FAIL",
+            'TEST FAIL',
             status_code=400
         )
 
