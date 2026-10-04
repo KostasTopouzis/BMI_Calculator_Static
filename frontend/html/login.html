@@ -38,16 +38,20 @@
             <fieldset>
                 <legend class="text-center mb-4">Log in</legend>
                 <div class="mb-3">
+                    <span id="usr-error-message" class="error-message"></span>
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" name="username" class="form-control" autocomplete="username" required minlength="8">
                 </div>
                 <div class="mb-4">
+                    <span id="pwd-error-message" class="error-message"></span>
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required minlength="8">
                 </div>
                 <button id="login-btn" class="btn btn-primary w-100" type="submit">Log in</button>
             </fieldset>
         </form>
+
+        <div id="general-error-message"></div>
     </main>
 
     <footer class="bg-dark p-3 border-top">

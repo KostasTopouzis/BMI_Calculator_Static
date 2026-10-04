@@ -29,6 +29,15 @@ footer {
     border-radius: 8px 0 0 8px;
 }
 
+.error-message {
+    display: none;
+}
+
+#general-error-message {
+    display: none;
+}
+
+
 @media (max-width: 767.98px) {
     .options-panel {
         position: static;

@@ -1,12 +1,33 @@
 import azure.functions as func
-import json, psycopg, os, logging, datetime
+import json, psycopg, os, logging, datetime, re
+
+#####################
+# Auxiliary functions
+#####################
+
+def checkCredentials(username: str, password: str):
+    if len(username) < 8 or len(password) < 8 or re.search(r'[^\w-]', username):
+       return False
+
+    return True
+
+
+#######################
+# Environment variables
+#######################
 
 # host = os.environ['POSTGRES_HOST']
 # database = os.environ['POSTGRES_DATABASE']
 # user = os.environ['POSTGRES_USER']
 # password = os.environ['POSTGRES_PASSWORD']
 
+##############################
+# Instantiating Azure Function
+##############################
+
 app = func.FunctionApp()
+
+# This is for testing purposes
 
 # @app.route(route='hello', methods=['GET'])
 # def hello(req: func.HttpRequest) -> func.HttpResponse:
@@ -18,6 +39,7 @@ app = func.FunctionApp()
 #         mimetype='application/json',
 #         status_code=200
 #     )
+
 
 @app.route(route='login', methods=['POST'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
@@ -34,6 +56,13 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
             return func.HttpResponse(
                 '',
                 status_code=403
+            )
+
+        if not checkCredentials(username, password):
+            return func.HttpResponse(
+                json.dumps('Inappropriate credentials'),
+                mimetype='application/json',
+                status_code=401
             )
 
         connection = psycopg.connect(
@@ -56,7 +85,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         if not user:
             return func.HttpResponse(
                 'Invalid credentials',
-                status_code=402
+                status_code=401
             )
 
         # logging.info(f'Type: {type(users)}')
@@ -75,7 +104,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         logging.exception(f'Database operation failed: {e}')
         return func.HttpResponse(
             'TEST FAIL',
-            status_code=400
+            status_code=500
         )
 
 
