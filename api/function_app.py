@@ -48,10 +48,6 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         username = req_body.get('username', '').strip()
         password = req_body.get('password', '')
 
-        # username = req.form.get('username')
-        # password = req.form.get('password')
-        print(username, password)
-
         if not (username and password):
             return func.HttpResponse(
                 '',
@@ -77,7 +73,6 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
 
         query = 'SELECT id, username FROM users WHERE username = %s AND password = %s'
 
-        # Here goes the SQL query code
         cursor.execute(query, (username, password))
 
         user = cursor.fetchone()
@@ -87,9 +82,6 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 'Invalid credentials',
                 status_code=401
             )
-
-        # logging.info(f'Type: {type(users)}')
-        # logging.info(f'Content: {users}')
 
         cursor.close()
         connection.close()
@@ -103,7 +95,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:
         logging.exception(f'Database operation failed: {e}')
         return func.HttpResponse(
-            'TEST FAIL',
+            '',
             status_code=500
         )
 

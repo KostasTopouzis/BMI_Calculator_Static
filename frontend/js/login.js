@@ -52,7 +52,6 @@ function checkCredentials(username, password) {
   };
 }
 
-
 async function connectAPI(payload) {
   try {
     const response = await fetch('http://localhost:7071/api/login', {
