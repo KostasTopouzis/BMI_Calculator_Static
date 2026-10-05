@@ -3,14 +3,29 @@ const usrErrMessage = document.getElementById('usr-error-message');
 const pwdErrMessage = document.getElementById('pwd-error-message');
 const genErrMessage = document.getElementById('general-error-message');
 
+const errorMessageTimeouts = new WeakMap();
+const ERROR_MESSAGE_DURATION = 5000;
+const ERROR_MESSAGE_TRANSITION_DURATION = 300;
 
 // Auxiliary function for message display
 function displayErrMessage(element, message) {
+  const previousTimeout = errorMessageTimeouts.get(element);
+  if (previousTimeout) {
+    clearTimeout(previousTimeout);
+  }
+
   element.textContent = message;
-  element.style.display = 'flex';
-  setTimeout(() => {
-    element.style.display = 'none';
-  }, 5000);
+  element.classList.add('is-visible');
+  const timeout = setTimeout(() => {
+    element.classList.remove('is-visible');
+    setTimeout(() => {
+      if (!element.classList.contains('is-visible')) {
+        element.textContent = '';
+      }
+    }, ERROR_MESSAGE_TRANSITION_DURATION);
+    errorMessageTimeouts.delete(element);
+  }, ERROR_MESSAGE_DURATION);
+  errorMessageTimeouts.set(element, timeout);
 }
 
 function displayGeneralErrMessage(message) {
