@@ -7,6 +7,8 @@ const errorMessageTimeouts = new WeakMap();
 const ERROR_MESSAGE_DURATION = 5000;
 const ERROR_MESSAGE_TRANSITION_DURATION = 300;
 
+let errorMessage = '';
+
 // Auxiliary function for message display
 function displayErrMessage(element, message) {
   const previousTimeout = errorMessageTimeouts.get(element);
@@ -70,10 +72,13 @@ async function connectAPI(payload) {
     });
   
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+      const error = new Error('Login failed');
+      error.status = response.status;
+      throw error;
     }
 
     const responseData = await response.json();
+
     return responseData;
     
   } catch (error) {
@@ -111,11 +116,18 @@ loginForm.addEventListener("submit", async (event) => {
 
     try {
         const apiResponse = await connectAPI({username, password});
-
-        sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse));
+    
+        sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
         window.location.href = 'welcome.html';
 
     } catch (error) {
-        displayErrMessage(genErrMessage, 'Login failed. Please, try again later.');
+      if(error.status === 500) {
+        errorMessage = 'An unexpected error occured. Please, try again later.';
+      }
+      else {
+        errorMessage = 'Authentication failed.';
+      }
+
+      displayErrMessage(genErrMessage, errorMessage);
     }
 });

@@ -44,20 +44,58 @@ app = func.FunctionApp()
 @app.route(route='login', methods=['POST'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
     try:
-        req_body = req.get_json()
-        username = req_body.get('username', '').strip()
-        password = req_body.get('password', '')
+        try:
+            req_body = req.get_json()
+        except ValueError:
+            return func.HttpResponse(
+                json.dumps({
+                    'error': 'invalid_json',
+                    'message': 'Request body must contain valid JSON.'
+                }),
+                mimetype='application/json',
+                status_code=400
+            )
 
+        if not isinstance(req_body, dict):
+            return func.HttpResponse(
+                json.dumps({
+                    'error': 'invalid_request',
+                    'message': 'Request body must be a JSON object.'
+                }),
+                mimetype='application/json',
+                status_code=400
+            )
+
+        username = req_body.get('username')
+        password = req_body.get('password')
+
+        if not isinstance(username, str) or not isinstance(password, str):
+            return func.HttpResponse(
+                json.dumps({
+                    'error': 'missing_credentials',
+                    'message': 'Username and password are required.'
+                }),
+                mimetype='application/json',
+                status_code=400
+            )
+
+        username = username.strip()
         if not (username and password):
             return func.HttpResponse(
-                json.dumps('Missing credentials'),
+                json.dumps({
+                    'error': 'missing_credentials',
+                    'message': 'Username and password are required.'
+                }),
                 mimetype='application/json',
                 status_code=400
             )
 
         if not checkCredentials(username, password):
             return func.HttpResponse(
-                json.dumps('Inappropriate credentials'),
+                json.dumps({
+                    'error': 'invalid_credentials_format',
+                    'message': 'Username or password does not meet the required format.'
+                }),
                 mimetype='application/json',
                 status_code=400
             )
@@ -72,7 +110,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
 
         cursor = connection.cursor()
 
-        query = 'SELECT id, username FROM users WHERE username = %s AND password = %s'
+        query = 'SELECT username FROM users WHERE username = %s AND password = %s'
 
         cursor.execute(query, (username, password))
 
@@ -80,7 +118,10 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
 
         if not user:
             return func.HttpResponse(
-                json.dumps('Invalid credentials'),
+                json.dumps({
+                    'error': 'authentication_failed',
+                    'message': 'Invalid username or password.'
+                }),
                 mimetype='application/json',
                 status_code=401
             )
@@ -89,16 +130,22 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         connection.close()
 
         return func.HttpResponse(
-            json.dumps(user),
+            json.dumps({
+                'message': 'Login successful.',
+                'username': user[0]
+            }),
             mimetype='application/json',
             status_code=200
         )
     
     except Exception as e:
-        logging.exception(f'Database operation failed: {e}')
+        logging.exception('Login request failed: %s', e)
         return func.HttpResponse(
-            '',
+            json.dumps({
+                'error': 'internal_server_error',
+                'message': 'An unexpected server error occurred.'
+            }),
+            mimetype='application/json',
             status_code=500
         )
-
 
