@@ -50,15 +50,16 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
 
         if not (username and password):
             return func.HttpResponse(
-                '',
-                status_code=403
+                json.dumps('Missing credentials'),
+                mimetype='application/json',
+                status_code=400
             )
 
         if not checkCredentials(username, password):
             return func.HttpResponse(
                 json.dumps('Inappropriate credentials'),
                 mimetype='application/json',
-                status_code=401
+                status_code=400
             )
 
         connection = psycopg.connect(
@@ -79,7 +80,8 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
 
         if not user:
             return func.HttpResponse(
-                'Invalid credentials',
+                json.dumps('Invalid credentials'),
+                mimetype='application/json',
                 status_code=401
             )
 

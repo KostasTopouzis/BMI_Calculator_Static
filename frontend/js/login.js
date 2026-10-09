@@ -28,14 +28,6 @@ function displayErrMessage(element, message) {
   errorMessageTimeouts.set(element, timeout);
 }
 
-function displayGeneralErrMessage(message) {
-    genErrMessage.textContent = message;
-    genErrMessage.style.display = 'flex';
-    setTimeout(() => {
-        genErrMessage.style.display = 'none';
-    }, 5000);
-}
-
 function checkCredentials(username, password) {
   if (username.length < 8) {
     return {
@@ -96,7 +88,7 @@ loginForm.addEventListener("submit", async (event) => {
 
     const formData = new FormData(loginForm);
     const username = (formData.get('username') || '').trim();
-    const password = formData.get('username') || '';
+    const password = formData.get('password') || '';
     
     if(!username) {
         displayErrMessage(usrErrMessage, 'You forgot to fill in your username!');
@@ -124,6 +116,6 @@ loginForm.addEventListener("submit", async (event) => {
         window.location.href = 'welcome.html';
 
     } catch (error) {
-        displayGeneralErrMessage('Login failed. Please, try again later.');
+        displayErrMessage(genErrMessage, 'Login failed. Please, try again later.');
     }
 });
