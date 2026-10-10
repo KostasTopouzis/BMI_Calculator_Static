@@ -237,8 +237,9 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
             )
 
         query = 'INSERT INTO users (username, password) VALUES (%s, %s)'
-
+      
         cursor.execute(query, (username, password))
+        connection.commit()
 
         cursor.close()
         connection.close()
