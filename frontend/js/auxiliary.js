@@ -55,7 +55,7 @@ function checkCredentials(username, password) {
 }
 
 async function connectAPI(payload, apiEndpoint) {
-  const urlPath = 'http://localhost:7071/api/' + apiEndpoint.trim();
+  const urlPath = '/api/' + apiEndpoint.trim();
   console.log(urlPath);
 
   try {
