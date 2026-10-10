@@ -16,10 +16,10 @@ def checkCredentials(username: str, password: str):
 # Environment variables
 #######################
 
-# host = os.environ['POSTGRES_HOST']
-# database = os.environ['POSTGRES_DATABASE']
-# user = os.environ['POSTGRES_USER']
-# password = os.environ['POSTGRES_PASSWORD']
+host = os.environ['POSTGRES_HOST']
+database = os.environ['POSTGRES_DATABASE']
+user = os.environ['POSTGRES_USER']
+password = os.environ['POSTGRES_PASSWORD']
 
 ##############################
 # Instantiating Azure Function
@@ -101,10 +101,10 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
             )
 
         connection = psycopg.connect(
-        host='localhost',
-        dbname='bmi_calc_test',
-        user='postgres',
-        password='marine26#',
+        host=host,
+        dbname=database,
+        user=user,
+        password=password,
         port=5432
         )
 
@@ -211,10 +211,10 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
             )
 
         connection = psycopg.connect(
-        host='localhost',
-        dbname='bmi_calc_test',
-        user='postgres',
-        password='marine26#',
+        host=host,
+        dbname=database,
+        user=user,
+        password=password,
         port=5432
         )
 
