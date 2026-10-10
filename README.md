@@ -5,7 +5,7 @@ A simple, user-friendly BMI calculator with the option to store and keep track o
 ---
 ## Screenshot
 
-[![BMI Calculator v1.0.0 Screenshot](index.png)
+![BMI Calculator v1.0.0 Screenshot](index.png)
 
 ---
 ## Features (current version)
