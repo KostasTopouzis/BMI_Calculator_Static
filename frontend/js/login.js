@@ -1,4 +1,5 @@
-const loginForm = document.getElementById('login-form')
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
 const usrErrMessage = document.getElementById('usr-error-message');
 const pwdErrMessage = document.getElementById('pwd-error-message');
 const genErrMessage = document.getElementById('general-error-message');
@@ -61,9 +62,11 @@ function checkCredentials(username, password) {
   };
 }
 
-async function connectAPI(payload) {
+async function connectAPI(payload, apiEndpoint) {
+  const urlPath = 'http://localhost:7071/api/' + apiEndpoint.trim();
+
   try {
-    const response = await fetch('http://localhost:7071/api/login', {
+    const response = await fetch(urlPath, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -91,9 +94,9 @@ async function connectAPI(payload) {
 loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(loginForm);
-    const username = (formData.get('username') || '').trim();
-    const password = formData.get('password') || '';
+    const loginFormData = new FormData(loginForm);
+    const username = (loginFormData.get('username') || '').trim();
+    const password = loginFormData.get('password') || '';
     
     if(!username) {
         displayErrMessage(usrErrMessage, 'You forgot to fill in your username!');
@@ -115,7 +118,52 @@ loginForm.addEventListener("submit", async (event) => {
     }
 
     try {
-        const apiResponse = await connectAPI({username, password});
+        const apiResponse = await connectAPI({username, password}, 'login');
+    
+        sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
+        window.location.href = 'welcome.html';
+
+    } catch (error) {
+      if(error.status === 500) {
+        errorMessage = 'An unexpected error occured. Please, try again later.';
+      }
+      else {
+        errorMessage = 'Authentication failed.';
+      }
+
+      displayErrMessage(genErrMessage, errorMessage);
+    }
+});
+
+
+signupForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const signupFormData = new FormData(signupForm);
+    const username = (signupFormData.get('username') || '').trim();
+    const password = signupFormData.get('password') || '';
+    
+    if(!username) {
+        displayErrMessage(usrErrMessage, 'You forgot to fill in your username!');
+        return;
+    }
+    if(!password) {
+        displayErrMessage(pwdErrMessage, 'You forgot to fill in your password!');
+        return;
+    }
+
+    const status = checkCredentials(username, password);
+
+    if(!status.isValid) {
+        if(status.failedCredential === 'username')
+            displayErrMessage(usrErrMessage, status.errorMsg);
+        else
+            displayErrMessage(pwdErrMessage, status.errorMsg);
+        return;
+    }
+
+    try {
+        const apiResponse = await connectAPI({username, password}, 'signup');
     
         sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
         window.location.href = 'welcome.html';
