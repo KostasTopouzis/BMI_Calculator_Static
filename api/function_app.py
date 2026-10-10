@@ -1,5 +1,21 @@
 import azure.functions as func
-import json, psycopg, os, logging, datetime, re
+import json, psycopg, os, logging, re
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
+
+ph = PasswordHasher()
+
+
+
+#######################
+# Environment variables
+#######################
+
+hostAzure = os.environ['POSTGRES_HOST']
+databaseAzure = os.environ['POSTGRES_DATABASE']
+userAzure = os.environ['POSTGRES_USER']
+passwordAzure = os.environ['POSTGRES_PASSWORD']
+
 
 #####################
 # Auxiliary functions
@@ -11,35 +27,48 @@ def checkCredentials(username: str, password: str):
 
     return True
 
+def connectDB():
+    connection = psycopg.connect(
+        host=hostAzure,
+        dbname=databaseAzure,
+        user=userAzure,
+        password=passwordAzure,
+        port=5432
+    )
+    return connection
 
-#######################
-# Environment variables
-#######################
+def authenticateUser(connection, username, raw_password):
+    with connection:
+        with connection.cursor() as cursor:
+            query = 'SELECT hashed_password FROM users WHERE username = %s'
+            cursor.execute(query, (username,))
 
-host = os.environ['POSTGRES_HOST']
-database = os.environ['POSTGRES_DATABASE']
-user = os.environ['POSTGRES_USER']
-password = os.environ['POSTGRES_PASSWORD']
+            row = cursor.fetchone()
+
+            if not row:
+                return False
+
+            stored_hash = row[0]
+
+            try:
+                ph.verify(stored_hash, raw_password)
+
+                if ph.check_needs_rehash(stored_hash):
+                    new_hash = ph.hash(raw_password)
+                    query = 'UPDATE users SET hashed_password = %s WHERE username = %s'
+                    cursor.execute(query, (new_hash, username))
+
+                return True
+
+            except VerifyMismatchError:
+                return False
+
 
 ##############################
 # Instantiating Azure Function
 ##############################
 
 app = func.FunctionApp()
-
-# This is for testing purposes
-
-# @app.route(route='hello', methods=['GET'])
-# def hello(req: func.HttpRequest) -> func.HttpResponse:
-#     data = {'message': 'User data is...',
-#             'success': True}
-    
-#     return func.HttpResponse(
-#         json.dumps(data),
-#         mimetype='application/json',
-#         status_code=200
-#     )
-
 
 @app.route(route='login', methods=['POST'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
@@ -100,23 +129,12 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=400
             )
 
-        connection = psycopg.connect(
-        host=host,
-        dbname=database,
-        user=user,
-        password=password,
-        port=5432
-        )
+        # Establish connection
+        connection = connectDB()
 
-        cursor = connection.cursor()
+        isValid = authenticateUser(connection, username, password)
 
-        query = 'SELECT username FROM users WHERE username = %s AND password = %s'
-
-        cursor.execute(query, (username, password))
-
-        user = cursor.fetchone()
-
-        if not user:
+        if not isValid:
             return func.HttpResponse(
                 json.dumps({
                     'error': 'authentication_failed',
@@ -126,13 +144,12 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=401
             )
 
-        cursor.close()
         connection.close()
 
         return func.HttpResponse(
             json.dumps({
                 'message': 'Login successful.',
-                'username': user[0]
+                'username': username
             }),
             mimetype='application/json',
             status_code=200
@@ -177,7 +194,7 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
 
         username = req_body.get('username')
         password = req_body.get('password')
-        print(username, password)
+        # print(username, password)
 
         if not isinstance(username, str) or not isinstance(password, str):
             return func.HttpResponse(
@@ -210,38 +227,32 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=400
             )
 
-        connection = psycopg.connect(
-        host=host,
-        dbname=database,
-        user=user,
-        password=password,
-        port=5432
-        )
+        # Establish connection
+        connection = connectDB()
 
-        cursor = connection.cursor()
+        with connection:
+            with connection.cursor() as cursor:
+                query = 'SELECT username FROM users WHERE username = %s'
+                cursor.execute(query, (username,))
 
-        query = 'SELECT username FROM users WHERE username = %s'
+                user = cursor.fetchone()
 
-        cursor.execute(query, (username,))
+                if user:
+                    return func.HttpResponse(
+                        json.dumps({
+                            'error': 'signup failed',
+                            'message': 'Username already exists.'
+                        }),
+                        mimetype='application/json',
+                        status_code=401
+                    )
 
-        user = cursor.fetchone()
+                password_hash = ph.hash(password)
 
-        if user:
-            return func.HttpResponse(
-                json.dumps({
-                    'error': 'signup failed',
-                    'message': 'Username already exists.'
-                }),
-                mimetype='application/json',
-                status_code=401
-            )
+                query = 'INSERT INTO users (username, hashed_password) VALUES (%s, %s)'
+            
+                cursor.execute(query, (username, password_hash))
 
-        query = 'INSERT INTO users (username, password) VALUES (%s, %s)'
-      
-        cursor.execute(query, (username, password))
-        connection.commit()
-
-        cursor.close()
         connection.close()
 
         return func.HttpResponse(
