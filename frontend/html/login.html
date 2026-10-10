@@ -33,21 +33,25 @@
         <p>Log in to continue</p>
     </header>
 
-    <main id="content" class="container flex-grow-1 d-flex justify-content-center align-items-start">
+    <main id="content" class="container flex-grow-1 d-flex flex-column align-items-center">
         <form id="login-form" class="col-11 col-sm-8 col-md-6 col-lg-4 border rounded px-4 py-4">
             <fieldset>
                 <legend class="text-center mb-4">Log in</legend>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" name="username" class="form-control" autocomplete="username" required>
+                    <span id="login-usr-error-message" class="error-message"></span>
+                    <input type="text" id="username" name="username" class="form-control" autocomplete="username" required minlength="8">
                 </div>
                 <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required>
+                    <span id="login-pwd-error-message" class="error-message"></span>
+                    <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required minlength="8">
                 </div>
                 <button id="login-btn" class="btn btn-primary w-100" type="submit">Log in</button>
             </fieldset>
         </form>
+
+        <div id="login-general-error-message" class="error-message mt-3"></div>
     </main>
 
     <footer class="bg-dark p-3 border-top">
@@ -78,6 +82,7 @@
         </div>
     </footer>
 
-    <script defer src="../js/login.js"></script>
+    <script type="module" defer src="../js/auxiliary.js"></script>
+    <script type="module" defer src="../js/login.js"></script>
 </body>
 </html>

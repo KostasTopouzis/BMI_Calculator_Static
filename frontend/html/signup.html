@@ -32,21 +32,25 @@
         <p>Create an account to save your measurements</p>
     </header>
 
-    <main id="content" class="container flex-grow-1 d-flex justify-content-center align-items-start">
-        <form id="login-form" class="col-11 col-sm-8 col-md-6 col-lg-4 border rounded px-4 py-4" action="#" method="post">
+    <main id="content" class="container flex-grow-1 d-flex flex-column align-items-center">
+        <form id="signup-form" class="col-11 col-sm-8 col-md-6 col-lg-4 border rounded px-4 py-4">
             <fieldset>
                 <legend class="text-center mb-4">Sign up</legend>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
+                    <span id="signup-usr-error-message" class="error-message"></span>
                     <input type="text" id="username" name="username" class="form-control" autocomplete="username" required>
                 </div>
                 <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
+                    <span id="signup-pwd-error-message" class="error-message"></span>
                     <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required>
                 </div>
                 <button class="btn btn-primary w-100" type="submit">Sign up</button>
             </fieldset>
         </form>
+
+        <div id="signup-general-error-message" class="error-message mt-3"></div>
     </main>
 
     <footer class="bg-dark p-3 border-top">
@@ -76,5 +80,8 @@
             </div>
         </div>
     </footer>
+
+    <script type="module" defer src="../js/auxiliary.js"></script>
+    <script type="module" defer src="../js/signup.js"></script>
 </body>
 </html>

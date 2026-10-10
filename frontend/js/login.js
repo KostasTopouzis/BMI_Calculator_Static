@@ -1,22 +1,55 @@
-const loginBtn = document.getElementById('login-btn');
+import { displayErrMessage, checkCredentials, connectAPI } from "./auxiliary.js";
 
-loginBtn.addEventListener("click", async () => {
+const loginForm = document.getElementById('login-form');
+const loginUsrErrMessage = document.getElementById('login-usr-error-message');
+const loginPwdErrMessage = document.getElementById('login-pwd-error-message');
+const loginGenErrMessage = document.getElementById('login-general-error-message');
+
+let loginErrorMessage = '';
+
+
+loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const loginFormData = new FormData(loginForm);
+    const username = (loginFormData.get('username') || '').trim();
+    const password = loginFormData.get('password') || '';
+    
+    if(!username) {
+        displayErrMessage(loginUsrErrMessage, 'You forgot to fill in your username!');
+        return;
+    }
+    if(!password) {
+        displayErrMessage(loginPwdErrMessage, 'You forgot to fill in your password!');
+        return;
+    }
+
+    const status = checkCredentials(username, password);
+
+    if(!status.isValid) {
+        if(status.failedCredential === 'username')
+            displayErrMessage(loginUsrErrMessage, status.errorMsg);
+        else
+            displayErrMessage(loginPwdErrMessage, status.errorMsg);
+        return;
+    }
 
     try {
-        const response = await fetch("/api/login");
+        const apiResponse = await connectAPI({username, password}, 'login');
+    
+        sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
+        window.location.href = 'welcome.html';
 
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        // console.log(data, typeof data, data.length);
-
-        sessionStorage.setItem("apiMessage", JSON.stringify(data));
-
-        window.location.href = "welcome.html";
     } catch (error) {
-        console.error("API request failed:", error);
-        // alert("Could not connect to the server.");
+      if(error.status === 500) {
+        loginErrorMessage = 'An unexpected error occured. Please, try again later.';
+      }
+      else {
+        loginErrorMessage = 'Authentication failed.';
+      }
+
+      displayErrMessage(loginGenErrMessage, loginErrorMessage);
     }
 });
+
+
