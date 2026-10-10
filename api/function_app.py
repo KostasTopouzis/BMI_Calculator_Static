@@ -177,6 +177,7 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
 
         username = req_body.get('username')
         password = req_body.get('password')
+        print(username, password)
 
         if not isinstance(username, str) or not isinstance(password, str):
             return func.HttpResponse(
@@ -221,7 +222,7 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
 
         query = 'SELECT username FROM users WHERE username = %s'
 
-        cursor.execute(query, (username))
+        cursor.execute(query, (username,))
 
         user = cursor.fetchone()
 
@@ -245,7 +246,7 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(
             json.dumps({
                 'message': 'Login successful.',
-                'username': user[0]
+                'username': username
             }),
             mimetype='application/json',
             status_code=200

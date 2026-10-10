@@ -1,95 +1,12 @@
+import { displayErrMessage, checkCredentials, connectAPI } from "./auxiliary.js";
+
 const loginForm = document.getElementById('login-form');
-const signupForm = document.getElementById('signup-form');
-const usrErrMessage = document.getElementById('usr-error-message');
-const pwdErrMessage = document.getElementById('pwd-error-message');
-const genErrMessage = document.getElementById('general-error-message');
+const loginUsrErrMessage = document.getElementById('login-usr-error-message');
+const loginPwdErrMessage = document.getElementById('login-pwd-error-message');
+const loginGenErrMessage = document.getElementById('login-general-error-message');
 
-const errorMessageTimeouts = new WeakMap();
-const ERROR_MESSAGE_DURATION = 5000;
-const ERROR_MESSAGE_TRANSITION_DURATION = 300;
+let loginErrorMessage = '';
 
-let errorMessage = '';
-
-// Auxiliary function for message display
-function displayErrMessage(element, message) {
-  const previousTimeout = errorMessageTimeouts.get(element);
-  if (previousTimeout) {
-    clearTimeout(previousTimeout);
-  }
-
-  element.textContent = message;
-  element.classList.add('is-visible');
-  const timeout = setTimeout(() => {
-    element.classList.remove('is-visible');
-    setTimeout(() => {
-      if (!element.classList.contains('is-visible')) {
-        element.textContent = '';
-      }
-    }, ERROR_MESSAGE_TRANSITION_DURATION);
-    errorMessageTimeouts.delete(element);
-  }, ERROR_MESSAGE_DURATION);
-  errorMessageTimeouts.set(element, timeout);
-}
-
-function checkCredentials(username, password) {
-  if (username.length < 8) {
-    return {
-        isValid: false, 
-        failedCredential: 'username',
-        errorMsg: 'Username should be at least 8 characters long'
-    };
-  }
-  
-  if (password.length < 8) {
-    return {
-        isValid: false, 
-        failedCredential: 'password',
-        errorMsg: 'Password must be at least 8 characters long'
-    };
-  }
-  
-  if (/[^\w-]/.test(username)) { 
-    return {
-        isValid: false, 
-        failedCredential: 'username',
-        errorMsg: 'Invalid username: only A-Z, a-z, 0-9 and _ are allowed'
-    };
-  }
- 
-  return {
-    isValid: true, 
-    errorMsg: null
-  };
-}
-
-async function connectAPI(payload, apiEndpoint) {
-  const urlPath = 'http://localhost:7071/api/' + apiEndpoint.trim();
-
-  try {
-    const response = await fetch(urlPath, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-  
-    if (!response.ok) {
-      const error = new Error('Login failed');
-      error.status = response.status;
-      throw error;
-    }
-
-    const responseData = await response.json();
-
-    return responseData;
-    
-  } catch (error) {
-    // Log the error for the developer and re-throw so the caller knows it failed
-    console.error("API Connection Failed:", error);
-    throw error; 
-  }
-}
 
 loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -99,11 +16,11 @@ loginForm.addEventListener("submit", async (event) => {
     const password = loginFormData.get('password') || '';
     
     if(!username) {
-        displayErrMessage(usrErrMessage, 'You forgot to fill in your username!');
+        displayErrMessage(loginUsrErrMessage, 'You forgot to fill in your username!');
         return;
     }
     if(!password) {
-        displayErrMessage(pwdErrMessage, 'You forgot to fill in your password!');
+        displayErrMessage(loginPwdErrMessage, 'You forgot to fill in your password!');
         return;
     }
 
@@ -111,9 +28,9 @@ loginForm.addEventListener("submit", async (event) => {
 
     if(!status.isValid) {
         if(status.failedCredential === 'username')
-            displayErrMessage(usrErrMessage, status.errorMsg);
+            displayErrMessage(loginUsrErrMessage, status.errorMsg);
         else
-            displayErrMessage(pwdErrMessage, status.errorMsg);
+            displayErrMessage(loginPwdErrMessage, status.errorMsg);
         return;
     }
 
@@ -125,57 +42,14 @@ loginForm.addEventListener("submit", async (event) => {
 
     } catch (error) {
       if(error.status === 500) {
-        errorMessage = 'An unexpected error occured. Please, try again later.';
+        loginErrorMessage = 'An unexpected error occured. Please, try again later.';
       }
       else {
-        errorMessage = 'Authentication failed.';
+        loginErrorMessage = 'Authentication failed.';
       }
 
-      displayErrMessage(genErrMessage, errorMessage);
+      displayErrMessage(loginGenErrMessage, loginErrorMessage);
     }
 });
 
 
-signupForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const signupFormData = new FormData(signupForm);
-    const username = (signupFormData.get('username') || '').trim();
-    const password = signupFormData.get('password') || '';
-    
-    if(!username) {
-        displayErrMessage(usrErrMessage, 'You forgot to fill in your username!');
-        return;
-    }
-    if(!password) {
-        displayErrMessage(pwdErrMessage, 'You forgot to fill in your password!');
-        return;
-    }
-
-    const status = checkCredentials(username, password);
-
-    if(!status.isValid) {
-        if(status.failedCredential === 'username')
-            displayErrMessage(usrErrMessage, status.errorMsg);
-        else
-            displayErrMessage(pwdErrMessage, status.errorMsg);
-        return;
-    }
-
-    try {
-        const apiResponse = await connectAPI({username, password}, 'signup');
-    
-        sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
-        window.location.href = 'welcome.html';
-
-    } catch (error) {
-      if(error.status === 500) {
-        errorMessage = 'An unexpected error occured. Please, try again later.';
-      }
-      else {
-        errorMessage = 'Authentication failed.';
-      }
-
-      displayErrMessage(genErrMessage, errorMessage);
-    }
-});
