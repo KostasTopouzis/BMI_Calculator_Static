@@ -37,7 +37,7 @@ signupForm.addEventListener("submit", async (event) => {
         const apiResponse = await connectAPI({username, password}, 'signup');
     
         sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
-        window.location.href = 'welcome.html';
+        window.location.href = 'account.html';
 
     } catch (error) {
       if(error.status === 409) {
