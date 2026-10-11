@@ -40,7 +40,7 @@ signupForm.addEventListener("submit", async (event) => {
         window.location.href = 'welcome.html';
 
     } catch (error) {
-      if(error.status === 401) {
+      if(error.status === 409) {
         signupErrorMessage = 'This username is already taken. Please, try another one.';
       }
       else if(error.status === 500) {

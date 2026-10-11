@@ -244,7 +244,7 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
                             'message': 'Username already exists.'
                         }),
                         mimetype='application/json',
-                        status_code=401
+                        status_code=409
                     )
 
                 password_hash = ph.hash(password)
