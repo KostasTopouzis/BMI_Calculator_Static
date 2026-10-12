@@ -8,6 +8,10 @@
     text-align: center;
 }
 
+#stats-bmi-table th, #stats-bmi-table td {
+	text-align: center;
+}
+
 footer {
     min-height: 120px;
 }

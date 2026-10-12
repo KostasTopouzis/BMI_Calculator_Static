@@ -27,12 +27,22 @@ def checkCredentials(username: str, password: str):
 
     return True
 
+# def connectDB():
+#     connection = psycopg.connect(
+#         host=hostAzure,
+#         dbname=databaseAzure,
+#         user=userAzure,
+#         password=passwordAzure,
+#         port=5432
+#     )
+#     return connection
+
 def connectDB():
     connection = psycopg.connect(
-        host=hostAzure,
-        dbname=databaseAzure,
-        user=userAzure,
-        password=passwordAzure,
+        host='localhost',
+        dbname='bmi_calc_test',
+        user='postgres',
+        password='marine26#',
         port=5432
     )
     return connection

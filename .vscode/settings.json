@@ -8,5 +8,6 @@
         "__blobstorage__/**",
         "__queuestorage__/**",
         "__tablestorage__/**"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }
