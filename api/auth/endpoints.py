@@ -13,7 +13,8 @@ bp = func.Blueprint()
 
 ph = PasswordHasher()
 
-
+# this function needs to be refactored by moving the preprocessing and validating code into a helper middleware function
+# or within validation.validate_credentials
 @bp.route(route='login', methods=['POST'])
 def login(req: func.HttpRequest) -> func.HttpResponse:
     try:
