@@ -52,3 +52,5 @@ def fetchRecord():
         record_data = cursor.fetchall()
 
         return json.dumps(record_data)
+    except Exception as e:
+        

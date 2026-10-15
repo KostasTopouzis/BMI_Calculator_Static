@@ -1,5 +1,9 @@
+// this script should be renamed something else and function as the general entry point for 
+// processes concerning account.html. It shall call code in calc.js and records.js
+
 document.addEventListener('DOMContentLoaded', () => {
     const bmiForm = document.getElementById('bmi-form');
+    const saveRecordBtn = document.getElementById('save-record');
     const metricHeightSelect = document.getElementById('metric-height');
     const metricWeightSelect = document.getElementById('metric-weight');
     const cmGroup = document.getElementById('cm-group');
@@ -7,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bmiResult = document.getElementById('bmi-result');
 
     let highlightedRow = null;
+    let formData;
 
     const categories = [
         'Severe Thinness', 
@@ -69,7 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. GATHER DATA FROM THE FORM
         const poundToKg = 0.453592;
         const inchToCm = 2.54;
-        const formData = new FormData(bmiForm);
+        formData = new FormData(bmiForm);
+
+        // Abstract this code away in a dedicated function
         const metricWeight = formData.get('metric-weight');
         const metricHeight = formData.get('metric-height');
         let bmi, idx;
@@ -89,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // FOR DEBUGGING
         // console.log(`BMI: ${bmi}`);
 
-        
         if(bmi < 16.0) {
             idx = 0;
         } else if(bmi >= 16.0 && bmi < 17.0) {
@@ -137,4 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
             highlightedRow = null;
         }
     });
+
+    saveRecordBtn.addEventListener('click', () => {
+        // Get the data from formData. You still need to convert them to json
+    })
 });

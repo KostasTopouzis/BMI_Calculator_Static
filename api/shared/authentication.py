@@ -29,5 +29,3 @@ def authenticateUser(connection, username, raw_password) -> bool:
 
             except VerifyMismatchError:
                 return False
-
-
