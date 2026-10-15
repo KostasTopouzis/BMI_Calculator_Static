@@ -1,4 +1,4 @@
-import os, psycopg
+import os, psycopg, json
 
 #######################
 # Environment variables
@@ -33,3 +33,22 @@ def connectDB():
         port=5432
     )
     return connection
+
+# saves record in records table. Throws exception to be caught in the records.records endpoint. Returns nothing.
+def saveRecord():
+
+
+# fetches all records from records table. Returns json string.
+def fetchRecord():
+    try:
+        connection = connectDB()
+
+        cursor = connection.cursor()
+
+        query = 'SELECT * FROM records'
+
+        cursor.execute(query)
+
+        record_data = cursor.fetchall()
+
+        return json.dumps(record_data)

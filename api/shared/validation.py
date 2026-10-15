@@ -6,3 +6,9 @@ def validateCredentials(username: str, password: str) -> bool:
 
     return True
 
+# validates record
+def validateRecord() -> bool:
+    if:
+        return False
+
+    return True
