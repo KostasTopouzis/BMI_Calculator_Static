@@ -14,25 +14,16 @@ passwordAzure = os.environ['POSTGRES_PASSWORD']
 # Functions for database connection and data queries
 #####################
 
-# def connectDB():
-#     connection = psycopg.connect(
-#         host=hostAzure,
-#         dbname=databaseAzure,
-#         user=userAzure,
-#         password=passwordAzure,
-#         port=5432
-#     )
-#     return connection
-
 def connectDB():
     connection = psycopg.connect(
-        host='localhost',
-        dbname='bmi_calc_test',
-        user='postgres',
-        password='marine26#',
+        host=hostAzure,
+        dbname=databaseAzure,
+        user=userAzure,
+        password=passwordAzure,
         port=5432
     )
     return connection
+
 
 # saves record in records table. Throws exception to be caught in the records.records endpoint. Returns nothing.
 def saveRecord(record: dict, user_id: int) -> None:
