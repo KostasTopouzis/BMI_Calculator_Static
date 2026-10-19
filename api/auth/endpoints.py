@@ -1,9 +1,9 @@
 import azure.functions as func
-import json, logging
+import json, logging, os
+from datetime import datetime, timedelta, timezone
 
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
-
+import jwt
 
 from shared.authentication import authenticateUser
 from shared.validation import validateCredentials
@@ -12,6 +12,21 @@ from shared.database import connectDB
 bp = func.Blueprint()
 
 ph = PasswordHasher()
+
+
+def createAccessToken(user_id: int) -> str:
+    now = datetime.now(timezone.utc)
+    expires_at = now + timedelta(minutes=30)
+    return jwt.encode(
+        {
+            'sub': str(user_id),
+            'iat': now,
+            'exp': expires_at
+        },
+        os.environ['AUTH_TOKEN_SECRET'],
+        algorithm='HS256'
+    )
+
 
 # this function needs to be refactored by moving the preprocessing and validating code into a helper middleware function
 # or within validation.validate_credentials
@@ -74,12 +89,10 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=400
             )
 
-        # Establish connection
-        connection = connectDB()
+        with connectDB() as connection:
+            user_id = authenticateUser(connection, username, password)
 
-        isValid = authenticateUser(connection, username, password)
-
-        if not isValid:
+        if user_id is None:
             return func.HttpResponse(
                 json.dumps({
                     'error': 'authentication_failed',
@@ -89,12 +102,15 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 status_code=401
             )
 
-        connection.close()
+        access_token = createAccessToken(user_id)
 
         return func.HttpResponse(
             json.dumps({
                 'message': 'Login successful.',
-                'username': username
+                'username': username,
+                'access_token': access_token,
+                'token_type': 'Bearer',
+                'expires_in': 1800
             }),
             mimetype='application/json',
             status_code=200
@@ -194,16 +210,21 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
 
                 password_hash = ph.hash(password)
 
-                query = 'INSERT INTO users (username, hashed_password) VALUES (%s, %s)'
+                query = 'INSERT INTO users (username, hashed_password) VALUES (%s, %s) RETURNING id'
             
                 cursor.execute(query, (username, password_hash))
+                user_id = cursor.fetchone()[0]
 
         connection.close()
+        access_token = createAccessToken(user_id)
 
         return func.HttpResponse(
             json.dumps({
-                'message': 'Login successful.',
-                'username': username
+                'message': 'Signup successful.',
+                'username': username,
+                'access_token': access_token,
+                'token_type': 'Bearer',
+                'expires_in': 1800
             }),
             mimetype='application/json',
             status_code=200
@@ -219,4 +240,3 @@ def signup(req: func.HttpRequest) -> func.HttpResponse:
             mimetype='application/json',
             status_code=500
         )
-

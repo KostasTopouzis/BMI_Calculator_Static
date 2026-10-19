@@ -1,7 +1,7 @@
 import azure.functions as func
 import json, logging
 
-# from shared.authentication import authenticateUser
+from shared.authentication import getAuthenticatedUserId
 from shared.validation import validateRecord
 from shared.database import saveRecord #, fetchRecord
 
@@ -9,6 +9,17 @@ bp = func.Blueprint()
 
 @bp.route (route='records', methods=['GET', 'POST'])
 def records(req: func.HttpRequest) -> func.HttpResponse:
+  user_id = getAuthenticatedUserId(req.headers.get('Authorization'))
+  if user_id is None:
+    return func.HttpResponse(
+        json.dumps({
+            'error': 'unauthorized',
+            'message': 'A valid access token is required.'
+        }),
+        mimetype='application/json',
+        status_code=401
+    )
+
   if req.method == 'GET':
     try:
       # record_json = fetchRecord()                 # some scenario for resource not found
@@ -48,7 +59,7 @@ def records(req: func.HttpRequest) -> func.HttpResponse:
                  status_code=400)   
         
       try:
-        saveRecord(record)
+        saveRecord(record, user_id)
 
         return func.HttpResponse(
           json.dumps({
@@ -79,5 +90,4 @@ def records(req: func.HttpRequest) -> func.HttpResponse:
       )                                            # something went wrong with saving the record in the database
 
                          # the record sent in the request is invalid
-
 

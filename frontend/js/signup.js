@@ -35,7 +35,12 @@ signupForm.addEventListener("submit", async (event) => {
 
     try {
         const apiResponse = await connectAPI({username, password}, 'signup');
+
+        if (typeof apiResponse.access_token !== 'string' || !apiResponse.access_token) {
+            throw new Error('Signup response did not include an access token.');
+        }
     
+        sessionStorage.setItem('access_token', apiResponse.access_token);
         sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
         window.location.href = 'account.html';
 

@@ -36,7 +36,12 @@ loginForm.addEventListener("submit", async (event) => {
 
     try {
         const apiResponse = await connectAPI({username, password}, 'login');
+
+        if (typeof apiResponse.access_token !== 'string' || !apiResponse.access_token) {
+            throw new Error('Login response did not include an access token.');
+        }
     
+        sessionStorage.setItem('access_token', apiResponse.access_token);
         sessionStorage.setItem('apiMessage', JSON.stringify(apiResponse.username));
         window.location.href = 'account.html';
 
@@ -51,5 +56,4 @@ loginForm.addEventListener("submit", async (event) => {
       displayErrMessage(loginGenErrMessage, loginErrorMessage);
     }
 });
-
 

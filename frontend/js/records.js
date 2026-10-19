@@ -17,9 +17,15 @@ async function saveRecord(bmiData) {
   console.log(JSON.stringify(bmiDataObj));
   // use FormData in account page js and send json to module for save/fetch
   try {
+    const accessToken = sessionStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('You must log in before saving a record.');
+    }
+
     const response = await fetch('http://localhost:7071/api/records', {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
       },
       method: 'POST',
       body: JSON.stringify(bmiDataObj)
@@ -53,8 +59,15 @@ async function saveRecord(bmiData) {
 document.addEventListener('DOMContentLoaded', async(event) => {
   event.preventDefault();
   try {
+    const accessToken = sessionStorage.getItem('access_token');
+    if (!accessToken) {
+      throw new Error('You must log in before fetching records.');
+    }
+
     const response = await fetch('/api/records', {
-      headers: '',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      },
       method: 'GET'
     });
 
