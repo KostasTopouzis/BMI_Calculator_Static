@@ -36,7 +36,8 @@ def connectDB():
 
 # saves record in records table. Throws exception to be caught in the records.records endpoint. Returns nothing.
 def saveRecord(record: dict) -> None:
-    user_id = record['user_id']
+    # user_id = record['user_id']
+    user_id = 1
     weight_kg = record['weightKg']
     height_cm = record['heightCm']
     bmi = record['bmi']

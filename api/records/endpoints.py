@@ -33,9 +33,9 @@ def records(req: func.HttpRequest) -> func.HttpResponse:
 
 
   if req.method == 'POST':
-      record = json.loads(req.get_json())
-      # print(type(record))
-      # print(record)
+      record = req.get_json()
+      print(type(record))
+      print(record)
       isValidRecord = validateRecord(record)
     
       if not isValidRecord:

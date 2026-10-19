@@ -3,12 +3,15 @@
 // sends record to api for saving in database.
 // Accepts FormData object as argument, converts it to JSON string for fetching.
 async function saveRecord(bmiData) {
+  const weightInKg = bmiData.get('metric-weight') === 'kg' ? (parseFloat(bmiData.get('weight')) || 0) : ((parseFloat(bmiData.get('weight')) || 0) * 0.453592);
+  const heightInCm = bmiData.get('metric-height') === 'cm' ? (parseFloat(bmiData.get('height-cm')) || 0) : (((parseFloat(bmiData.get('height-feet')) || 0) * 12 + (parseFloat(bmiData.get('height-inches')) || 0)) * 2.54);
+
   const bmiDataObj = {
     metricHeight: bmiData.get('metric-height'),
     metricWeight: bmiData.get('metric-weight'),
-    heightCm: bmiData.get('metric-height') === 'meters' ? (parseFloat(bmiData.get('height-cm')) || 0) : (((parseFloat(bmiData.get('height-feet')) || 0) * 12 + (parseFloat(bmiData.get('height-inches')) || 0)) * 2.54),
-    weightKg: bmiData.get('metric-weight') === 'kg' ? (parseFloat(bmiData.get('weight')) || 0) : ((parseFloat(bmiData.get('weight')) || 0) * 0.453592),
-    bmi: weightKg / ((heightCm / 100)**2)
+    heightCm: heightInCm,
+    weightKg: weightInKg,
+    bmi: weightInKg / ((heightInCm / 100)**2)
   };
 
   console.log(JSON.stringify(bmiDataObj));
