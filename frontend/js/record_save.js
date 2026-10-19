@@ -2,7 +2,7 @@
 
 // sends record to api for saving in database.
 // Accepts FormData object as argument, converts it to JSON string for fetching.
-async function saveRecord(bmiData) {
+export default async function saveRecord(bmiData) {
   const weightInKg = bmiData.get('metric-weight') === 'kg' ? (parseFloat(bmiData.get('weight')) || 0) : ((parseFloat(bmiData.get('weight')) || 0) * 0.453592);
   const heightInCm = bmiData.get('metric-height') === 'cm' ? (parseFloat(bmiData.get('height-cm')) || 0) : (((parseFloat(bmiData.get('height-feet')) || 0) * 12 + (parseFloat(bmiData.get('height-inches')) || 0)) * 2.54);
 
@@ -53,5 +53,3 @@ async function saveRecord(bmiData) {
     }
   }
 }
-
-export default { saveRecord }
