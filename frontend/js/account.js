@@ -1,5 +1,5 @@
 import calcBMI from './calc.js'
-import { saveRecord } from './records.js'
+import  saveRecord from './record_save.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     const bmiForm = document.getElementById('bmi-form');
