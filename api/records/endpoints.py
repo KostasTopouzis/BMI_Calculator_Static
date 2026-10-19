@@ -1,8 +1,8 @@
 import azure.functions as func
 import json, logging
 
-from shared.authentication import authenticateUser
-from shared.validation import validateCredentials, validateRecord
+# from shared.authentication import authenticateUser
+from shared.validation import validateRecord
 from shared.database import saveRecord #, fetchRecord
 
 bp = func.Blueprint()
