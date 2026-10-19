@@ -9,7 +9,15 @@ bp = func.Blueprint()
 
 @bp.route (route='records', methods=['GET', 'POST'])
 def records(req: func.HttpRequest) -> func.HttpResponse:
+  authorization = req.headers.get('Authorization')
   user_id = getAuthenticatedUserId(req.headers.get('Authorization'))
+
+  logging.info(
+     'Records auth check: authorization_header_present=%s, authenticated_user_id=%s',
+     bool(authorization),
+     user_id
+  )
+  
   if user_id is None:
     return func.HttpResponse(
         json.dumps({
