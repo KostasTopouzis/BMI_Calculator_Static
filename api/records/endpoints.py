@@ -2,8 +2,8 @@ import azure.functions as func
 import json, logging
 
 from shared.authentication import authenticateUser
-from shared.validation import validateCredentials, validateRecord
-from shared.database import saveRecord, fetchRecord
+from shared.validation import validateCredentials #, validateRecord
+# from shared.database import saveRecord, fetchRecord
 
 bp = func.Blueprint()
 
@@ -33,11 +33,15 @@ def records(req: func.HttpRequest) -> func.HttpResponse:
 
 
   if req.method == 'POST':
-      isValidRecord = validateRecord(record)
+      record = json.loads(req.get_json())
+      print(type(record_json))
+      print(record_json)
+      # isValidRecord = validateRecord(record)
+      isValidRecord = 1
     
       if isValidRecord:
         try:
-          saveRecord(record)
+          saveRecord(record_json)
 
           return func.HttpResponse(
             json.dumps({

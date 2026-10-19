@@ -35,22 +35,22 @@ def connectDB():
     return connection
 
 # saves record in records table. Throws exception to be caught in the records.records endpoint. Returns nothing.
-def saveRecord():
+# def saveRecord():
 
 
-# fetches all records from records table. Returns json string.
-def fetchRecord():
-    try:
-        connection = connectDB()
+# # fetches all records from records table. Returns json string.
+# def fetchRecord():
+#     try:
+#         connection = connectDB()
 
-        cursor = connection.cursor()
+#         cursor = connection.cursor()
 
-        query = 'SELECT * FROM records'
+#         query = 'SELECT * FROM records'
 
-        cursor.execute(query)
+#         cursor.execute(query)
 
-        record_data = cursor.fetchall()
+#         record_data = cursor.fetchall()
 
-        return json.dumps(record_data)
-    except Exception as e:
+#         return json.dumps(record_data)
+#     except Exception as e:
         

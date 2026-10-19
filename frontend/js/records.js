@@ -1,13 +1,24 @@
 // Contains auxilliary functions for record fetching and saving to database
 
-// sends record to api for saving in database. Accepts type json as argument
-async function saveRecord(record) {
+// sends record to api for saving in database.
+// Accepts FormData object as argument, converts it to JSON string for fetching.
+async function saveRecord(bmiData) {
+  const bmiDataObj = {
+    metricHeight: bmiData.get('metric-height'),
+    metricWeight: bmiData.get('metric-weight'),
+    heightCm: bmiData.get('metric-height') === 'meters' ? (parseFloat(bmiData.get('height-cm')) || 0) : (((parseFloat(bmiData.get('height-feet')) || 0) * 12 + (parseFloat(bmiData.get('height-inches')) || 0)) * 2.54),
+    weightKg: bmiData.get('metric-weight') === 'kg' ? (parseFloat(bmiData.get('weight')) || 0) : ((parseFloat(bmiData.get('weight')) || 0) * 0.453592)
+  };
+
+  console.log(JSON.stringify(bmiDataObj));
   // use FormData in account page js and send json to module for save/fetch
   try {
-    const response = await fetch('/api/records', {
-      headers: '',
+    const response = await fetch('http://localhost:7071/api/records', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
-      body: record
+      body: JSON.stringify(bmiDataObj)
     });
 
     if(!response.ok) {
@@ -64,3 +75,4 @@ document.addEventListener('DOMContentLoaded', async(event) => {
   }
 });
 
+export { saveRecord }

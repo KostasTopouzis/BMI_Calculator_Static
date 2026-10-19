@@ -7,8 +7,8 @@ def validateCredentials(username: str, password: str) -> bool:
     return True
 
 # validates record
-def validateRecord() -> bool:
-    if:
-        return False
+# def validateRecord(record: dict) -> bool:
+#     if record.get('metricWeight)] :
+#         return False
 
-    return True
+#     return True
