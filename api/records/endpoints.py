@@ -3,7 +3,7 @@ import json, logging
 
 from shared.authentication import authenticateUser
 from shared.validation import validateCredentials, validateRecord
-# from shared.database import saveRecord, fetchRecord
+from shared.database import saveRecord #, fetchRecord
 
 bp = func.Blueprint()
 
@@ -37,36 +37,47 @@ def records(req: func.HttpRequest) -> func.HttpResponse:
       # print(type(record))
       # print(record)
       isValidRecord = validateRecord(record)
-      # isValidRecord = 1
     
-      if isValidRecord:
-        try:
-          # saveRecord(record_json)
+      if not isValidRecord:
+        return func.HttpResponse(
+                 json.dumps({
+                   'error': 'invalid_record_format', 
+                   'message': 'Record does not meet the required format.'
+                  }),
+                 mimetype='application/json',
+                 status_code=400)   
+        
+      try:
+        saveRecord(record)
 
-          return func.HttpResponse(
-            json.dumps({
-                'message': 'Record successfuly saved.'
-            }),
-            mimetype='application/json',
-            status_code=200
-        )                        # succesful save of record to database
-
-        except Exception as e:
-          return func.HttpResponse(
-            json.dumps({
-                'error': 'internal_server_error',
-                'message': 'An unexpected server error occurred.'
-            }),
-            mimetype='application/json',
-            status_code=500
-        )                                            # something went wrong with saving the record in the database
-
-      return func.HttpResponse(
-         json.dumps({
-           'error': 'invalid_record_format', 
-           'message': 'Record does not meet the required format.'
+        return func.HttpResponse(
+          json.dumps({
+              'message': 'Record successfuly saved.'
           }),
-         mimetype='application/json',
-         status_code=400)                        # the record sent in the request is invalid
+          mimetype='application/json',
+          status_code=200
+      )                        # succesful save of record to database
+
+      except ValueError:
+              return func.HttpResponse(
+                json.dumps({
+                    'error': 'missing_data_error',
+                    'message': 'Missing form data.'
+                }),
+                mimetype='application/json',
+                status_code=400
+            )   
+
+      except Exception as e:
+        return func.HttpResponse(
+          json.dumps({
+              'error': 'internal_server_error',
+              'message': 'An unexpected server error occurred.'
+          }),
+          mimetype='application/json',
+          status_code=500
+      )                                            # something went wrong with saving the record in the database
+
+                         # the record sent in the request is invalid
 
 

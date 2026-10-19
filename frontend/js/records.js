@@ -7,7 +7,8 @@ async function saveRecord(bmiData) {
     metricHeight: bmiData.get('metric-height'),
     metricWeight: bmiData.get('metric-weight'),
     heightCm: bmiData.get('metric-height') === 'meters' ? (parseFloat(bmiData.get('height-cm')) || 0) : (((parseFloat(bmiData.get('height-feet')) || 0) * 12 + (parseFloat(bmiData.get('height-inches')) || 0)) * 2.54),
-    weightKg: bmiData.get('metric-weight') === 'kg' ? (parseFloat(bmiData.get('weight')) || 0) : ((parseFloat(bmiData.get('weight')) || 0) * 0.453592)
+    weightKg: bmiData.get('metric-weight') === 'kg' ? (parseFloat(bmiData.get('weight')) || 0) : ((parseFloat(bmiData.get('weight')) || 0) * 0.453592),
+    bmi: weightKg / ((heightCm / 100)**2)
   };
 
   console.log(JSON.stringify(bmiDataObj));

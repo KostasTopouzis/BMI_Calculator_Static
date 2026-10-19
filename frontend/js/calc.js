@@ -16,11 +16,11 @@ export default function calcBMI(formData) {
     
     // Convert all measurements to a standard unit (kg and cm) for calculation
     const weightInKg = (metricWeight === 'pd') ? weightInput * poundToKg : weightInput;
-    const heightInM = (metricHeight === 'feet') ? (heightFeetInput * 12 + heightInchesInput) * inchToCm / 100 : heightCmInput / 100;
+    const heightInM = (metricHeight === 'in') ? (heightFeetInput * 12 + heightInchesInput) * inchToCm / 100 : heightCmInput / 100;
     
     bmi = weightInKg / heightInM**2;
 
-    let heightText = metricHeight === 'feet' ? `${heightFeetInput} ft ${heightInchesInput} in` : `${heightCmInput} cm`;
+    let heightText = metricHeight === 'in' ? `${heightFeetInput} ft ${heightInchesInput} in` : `${heightCmInput} cm`;
     let weightText = metricWeight === 'pd' ? `${weightInput} lb` : `${weightInput} kg`;
     
     return {htTxt: heightText, 

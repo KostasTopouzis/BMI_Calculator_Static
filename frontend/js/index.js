@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleHeightInputs = () => {
         const selectedValue = metricHeightSelect.value;
 
-        if (selectedValue === 'meters') {
+        if (selectedValue === 'cm') {
             cmGroup.classList.remove('d-none');
             feetInchesGroup.classList.add('d-none');
 
             // Enable cm inputs, disable feet/inches inputs
             cmGroup.querySelectorAll('input').forEach(input => input.removeAttribute('disabled'));
             feetInchesGroup.querySelectorAll('input').forEach(input => input.setAttribute('disabled', 'true'));
-        } else if (selectedValue === 'feet') {
+        } else if (selectedValue === 'in') {
             feetInchesGroup.classList.remove('d-none');
             cmGroup.classList.add('d-none');
 

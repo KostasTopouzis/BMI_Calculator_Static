@@ -39,9 +39,9 @@ def saveRecord(record: dict) -> None:
     user_id = record['user_id']
     weight_kg = record['weightKg']
     height_cm = record['heightCm']
-    bmi = weight_kg / (height_cm / 100) ** 2
+    bmi = record['bmi']
     weight_unit = record['metricWeight']
-    height_unit = 'feet' if record['metricHeight'] == 'feet' else 'cm'
+    height_unit = record['metricHeight']
 
     query = '''
         INSERT INTO records (
