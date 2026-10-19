@@ -22,7 +22,7 @@ async function saveRecord(bmiData) {
       throw new Error('You must log in before saving a record.');
     }
 
-    const response = await fetch('http://localhost:7071/api/records', {
+    const response = await fetch('/api/records', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
