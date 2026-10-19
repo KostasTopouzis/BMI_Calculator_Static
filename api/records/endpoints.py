@@ -2,7 +2,7 @@ import azure.functions as func
 import json, logging
 
 from shared.authentication import authenticateUser
-from shared.validation import validateCredentials #, validateRecord
+from shared.validation import validateCredentials, validateRecord
 # from shared.database import saveRecord, fetchRecord
 
 bp = func.Blueprint()
@@ -11,12 +11,12 @@ bp = func.Blueprint()
 def records(req: func.HttpRequest) -> func.HttpResponse:
   if req.method == 'GET':
     try:
-      record_json = fetchRecord()                 # some scenario for resource not found
+      # record_json = fetchRecord()                 # some scenario for resource not found
 
       return func.HttpResponse(
             json.dumps({
                 'message': 'Record successfuly fetched.',
-                'data': record_json
+                'data': '' # record_json
             }),
             mimetype='application/json',
             status_code=200
@@ -34,14 +34,14 @@ def records(req: func.HttpRequest) -> func.HttpResponse:
 
   if req.method == 'POST':
       record = json.loads(req.get_json())
-      print(type(record_json))
-      print(record_json)
-      # isValidRecord = validateRecord(record)
-      isValidRecord = 1
+      # print(type(record))
+      # print(record)
+      isValidRecord = validateRecord(record)
+      # isValidRecord = 1
     
       if isValidRecord:
         try:
-          saveRecord(record_json)
+          # saveRecord(record_json)
 
           return func.HttpResponse(
             json.dumps({
