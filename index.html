@@ -56,10 +56,11 @@
 
                 <fieldset id="measurements" class="row border rounded mb-3 px-3 py-2">
                     <legend>Fill in your measurements</legend>
+                    <span id="height-error-message" class="error-message"></span>
                     <div id="cm-group">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Height</span>
-                            <input type="number" name="height-cm" class="form-control" placeholder="180" aria-label="Height" min="20" required>
+                            <input type="number" name="height-cm" class="form-control" placeholder="180" aria-label="Height" min="0" required>
                             <span class="input-group-text">cm</span>
                         </div>
                     </div>
@@ -68,13 +69,13 @@
                             <span class="input-group-text">Height</span>
                             <input type="number" name="height-feet" class="form-control" placeholder="5" aria-label="Height" min="0" required>
                             <span class="input-group-text">feet</span>
-                            <input type="number" name="height-inches" class="form-control ms-2" placeholder="6" aria-label="Height" min="5" required>
+                            <input type="number" name="height-inches" class="form-control ms-2" placeholder="6" aria-label="Height" min="0" required>
                             <span class="input-group-text">inches</span>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Weight</span>
-                        <input type="number" name="weight" class="form-control" placeholder="75" aria-label="Weight" min="10" required>
+                        <input type="number" name="weight" class="form-control" placeholder="75" aria-label="Weight" min="0" required>
                         <span id="weight-unit" class="input-group-text">kg</span>
                     </div>
                 </fieldset>

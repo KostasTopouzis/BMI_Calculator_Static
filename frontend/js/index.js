@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cmGroup = document.getElementById('cm-group');
     const feetInchesGroup = document.getElementById('feet-inches-group');
     const bmiResult = document.getElementById('bmi-result');
+    const heightErrorMessage = document.getElementById('height-error-message');
 
     const toggleHeightInputs = () => {
         const selectedValue = metricHeightSelect.value;
@@ -72,6 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         formData = new FormData(bmiForm);
         const results = calcBMI(formData);
+
+        if(!results.isValid) {
+        displayErrMessage(heightErrorMessage, 'Height cannot be zero!');
+        return;
+        }
+
         let bmi = results.BMI;
         let heightText = results.htTxt;
         let weightText = results.wtTxt;

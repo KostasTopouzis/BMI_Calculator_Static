@@ -18,12 +18,20 @@ export default function calcBMI(formData) {
     const weightInKg = (metricWeight === 'pd') ? weightInput * poundToKg : weightInput;
     const heightInM = (metricHeight === 'in') ? (heightFeetInput * 12 + heightInchesInput) * inchToCm / 100 : heightCmInput / 100;
     
+    if(heightInM === 0) {
+        return {
+            isValid: false
+        }
+    }
+
     bmi = weightInKg / heightInM**2;
 
     let heightText = metricHeight === 'in' ? `${heightFeetInput} ft ${heightInchesInput} in` : `${heightCmInput} cm`;
     let weightText = metricWeight === 'pd' ? `${weightInput} lb` : `${weightInput} kg`;
     
-    return {htTxt: heightText, 
+    return {
+        isValid: true,
+        htTxt: heightText, 
         wtTxt: weightText,
         BMI: bmi
     }
