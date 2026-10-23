@@ -2,7 +2,6 @@ import calcBMI from './calc.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     const bmiForm = document.getElementById('bmi-form');
-    const saveRecordBtn = document.getElementById('save-record');
     const metricHeightSelect = document.getElementById('metric-height');
     const metricWeightSelect = document.getElementById('metric-weight');
     const cmGroup = document.getElementById('cm-group');
