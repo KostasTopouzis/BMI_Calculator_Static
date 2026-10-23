@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const results = calcBMI(formData);
 
         if(!results.isValid) {
-        displayErrMessage(heightErrorMessage, 'Height cannot be zero!');
+        displayErrMessage(heightErrorMessage, 'Height cannot be 0!');
         return;
         }
 
