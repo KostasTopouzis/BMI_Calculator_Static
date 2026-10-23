@@ -1,4 +1,5 @@
 import calcBMI from './calc.js'
+import { displayErrMessage } from "./auxiliary.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const bmiForm = document.getElementById('bmi-form');
